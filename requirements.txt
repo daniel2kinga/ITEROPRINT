@@ -1,4 +1,4 @@
 Flask
+Flask-Cors
 selenium
-gunicorn
-webdriver-manager
+webdriver_manager
