@@ -18,15 +18,16 @@ RUN apt-get update && apt-get install -y \
     libxi6 \
     libxss1 \
     libappindicator1 \
-    xdg-utils
+    xdg-utils \
+    firefox-esr \
+    libgtk-3-0 \
+    libdbus-glib-1-2
 
-# Instalar Google Chrome versión estable
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install
-
-# Configurar la variable de entorno para Chrome en modo headless
-ENV CHROME_BIN=/usr/bin/google-chrome
-ENV PATH=$PATH:/usr/local/bin/
+# Instalar geckodriver para Firefox
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.32.0/geckodriver-v0.32.0-linux64.tar.gz \
+    && tar -xvzf geckodriver-v0.32.0-linux64.tar.gz \
+    && mv geckodriver /usr/local/bin/ \
+    && rm geckodriver-v0.32.0-linux64.tar.gz
 
 # Crear un directorio de trabajo
 WORKDIR /app
