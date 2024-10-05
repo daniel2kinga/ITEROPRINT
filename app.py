@@ -2,6 +2,7 @@ import os
 import time
 import logging
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
@@ -22,12 +23,14 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+CORS(app)
 
 def configurar_driver():
     firefox_options = Options()
     firefox_options.add_argument("--no-sandbox")
     firefox_options.add_argument("--disable-dev-shm-usage")
     firefox_options.add_argument("--disable-gpu")
+    firefox_options.add_argument("--headless")
 
     # Configuraciones para imprimir sin ventana emergente
     firefox_options.set_preference("print.always_print_silent", True)
@@ -76,7 +79,7 @@ def hacer_click_en_casos_totales(driver):
     try:
         # Intentar hacer clic en el botón "Casos Totales" usando XPATH
         boton_casos_totales = WebDriverWait(driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//span[text()='Casos totales']"))
+            EC.element_to_be_clickable((By.XPATH, "//span[text()='Casos pendientes']"))
         )
         driver.execute_script("arguments[0].scrollIntoView(true);", boton_casos_totales)
         time.sleep(2)
